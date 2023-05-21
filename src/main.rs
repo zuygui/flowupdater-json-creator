@@ -35,7 +35,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
 
     
     let curse_client: CurseApiClient = CurseApiClientBuilder::new()
-        .with_api_token("$2a$10$FSMPrnX2TyC9kluMfAWvHuGqGxa7qKuvXpClTB/vB8LE3fVu9ic9e")
+        .with_api_token("#### WAITING FOR A API KEY ####")
         .with_game_version(minecraft_version.to_string())
         .with_mod_loader(
             match modloader {

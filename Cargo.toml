@@ -5,6 +5,11 @@ authors     = ["Zuygui", "Bricklou"]
 license     = "MIT"
 version     = "0.1.0"
 edition     = "2021"
+readme      = "README.md"
+homepage    = "https://github.com/zuygui/flowupdater-json-creator"
+repository  = "https://github.com/zuygui/flowupdater-json-creator"
+keywords    = ["cli", "tui", "json", "flow-updater", "flowupdater", "curseforge", "eternalapi"]
+categories  = ["command-line-utilities", "development-tools"]
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
