@@ -2,11 +2,10 @@ use std::io::Write;
 
 use crate::curse_api::CurseMod;
 
-
 /**
- * 
+ *
  *  Structure of the output JSON file
- * 
+ *
  * {
  *   "curseFiles": [
  *    {

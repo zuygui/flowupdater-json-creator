@@ -39,4 +39,4 @@ cargo build --release
 
 ## License
 
-[Custom licence](https://github.com/zuygui/flowupdater-json-creator/blob/master/LICENSE)
+[MIT](https://github.com/zuygui/flowupdater-json-creator/blob/master/LICENSE)

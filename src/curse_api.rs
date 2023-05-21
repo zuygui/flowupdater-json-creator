@@ -1,32 +1,14 @@
-use serde::{Deserialize,Serialize};
+use serde::{Deserialize, Serialize};
 
 const BASE_URL: &str = "https://api.curseforge.com/v1/";
 const MINECRAFT_ID: isize = 432;
 
 pub const FORGE_COMPATIBLES_VERSIONS: [&str; 13] = [
-    "1.7",
-    "1.8",
-    "1.9",
-    "1.10",
-    "1.11",
-    "1.12",
-    "1.13",
-    "1.14",
-    "1.15",
-    "1.16",
-    "1.17",
-    "1.18",
+    "1.7", "1.8", "1.9", "1.10", "1.11", "1.12", "1.13", "1.14", "1.15", "1.16", "1.17", "1.18",
     "1.19",
 ];
 
-pub const FABRIC_COMPATIBLES_VERSIONS: [&str; 6] = [
-    "1.14",
-    "1.15",
-    "1.16",
-    "1.17",
-    "1.18",
-    "1.19",
-];
+pub const FABRIC_COMPATIBLES_VERSIONS: [&str; 6] = ["1.14", "1.15", "1.16", "1.17", "1.18", "1.19"];
 
 #[derive(Debug, Deserialize, Serialize, Clone)]
 pub enum ModLoader {
@@ -53,7 +35,7 @@ pub enum SearchSortField {
     #[serde(rename = "category")]
     Category,
     #[serde(rename = "game_version")]
-    GameVersion
+    GameVersion,
 }
 
 pub struct CurseApiClientBuilder {
@@ -78,10 +60,10 @@ impl CurseApiClientBuilder {
             api_token: None,
         }
     }
-    
+
     pub fn with_api_token<T>(mut self, api_token: T) -> Self
     where
-        T: Into<String>
+        T: Into<String>,
     {
         self.api_token = Some(api_token.into());
         self
@@ -156,7 +138,7 @@ pub struct SearchMod {
     #[serde(rename = "modLoaderType")]
     pub mod_loader_type: Option<ModLoader>,
     #[serde(rename = "sortField")]
-    pub sort_field: Option<SearchSortField>
+    pub sort_field: Option<SearchSortField>,
 }
 
 pub struct CurseMod {
@@ -181,8 +163,11 @@ impl CurseApiClient {
      * Get the mod id from the mod name
      * @param query The mod name
      */
-     
-    pub async fn search_mod<T>(&self, query: T) -> Result<SearchModResponse, Box<dyn std::error::Error>>
+
+    pub async fn search_mod<T>(
+        &self,
+        query: T,
+    ) -> Result<SearchModResponse, Box<dyn std::error::Error>>
     where
         T: Into<String>,
     {
@@ -196,7 +181,8 @@ impl CurseApiClient {
             sort_field: Some(SearchSortField::Name),
         };
 
-        let response = self.http_client
+        let response = self
+            .http_client
             .get(&url)
             .header("accept", "application/json")
             .header("x-api-key", &self.api_token)
@@ -207,25 +193,36 @@ impl CurseApiClient {
         Ok(response.json::<SearchModResponse>().await?)
     }
 
-    pub async fn get_mod_file_id(&self, mod_id: isize, mod_name: String) -> Result<CurseMod, Box<dyn std::error::Error>> 
-    {
-
+    pub async fn get_mod_file_id(
+        &self,
+        mod_id: isize,
+        mod_name: String,
+    ) -> Result<CurseMod, Box<dyn std::error::Error>> {
         let id = mod_id.clone();
         let url = format!("{}{}", BASE_URL, format!("mods/{}", mod_id));
 
-        let response = self.http_client
+        let response = self
+            .http_client
             .get(&url)
             .header("accept", "application/json")
             .header("x-api-key", &self.api_token)
             .send()
             .await?;
 
-        let file_id: Result<FilesModResponse, reqwest::Error> = response.json::<FilesModResponse>().await;
+        let file_id: Result<FilesModResponse, reqwest::Error> =
+            response.json::<FilesModResponse>().await;
         // return Ok(file_id.unwrap().data.latest_files_indexes.iter().find(|&x| x.game_version == self.game_version).unwrap().file_id);
         Ok(CurseMod {
             name: mod_name,
             mod_id: id,
-            file_id: file_id.unwrap().data.latest_files_indexes.iter().find(|&x| x.game_version == self.game_version).unwrap().file_id,
+            file_id: file_id
+                .unwrap()
+                .data
+                .latest_files_indexes
+                .iter()
+                .find(|&x| x.game_version == self.game_version)
+                .unwrap()
+                .file_id,
         })
     }
 }
