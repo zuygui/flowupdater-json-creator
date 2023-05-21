@@ -6,7 +6,7 @@ Create JSON file compatibles with Flow Updater from command line.
 
 Download from [releases](https://github.com/zuygui/flowupdater-json-creator/releases).
 
-Or from source (require [cargo and rust](https://rust-lang.com)) :
+Or from source(require [cargo and rust](https://rust-lang.com)) :
 
 ```bash
 git clone https://github.com/zuygui/flowupdater-json-creator.git
@@ -27,15 +27,15 @@ cargo build --release
 
 ## Features
 
-- [Eternal API (Curseforge api)](https://docs.curseforge.com/#getting-started) wrapper
+- [Eternal API(Curseforge api)](https://docs.curseforge.com/#getting-started) wrapper
 - JSON Transpiler from mods list
 - TUI with [requestty](https://github.com/Lutetium-Vanadium/requestty)
 - Cross platform
 
 ## Documentation
 
-- [Documentation (in French)](https://bricklou.github.io/launcher-tutorials)
-- [Documentation (in English)](https://github.com/zuygui/flowupdater-json-creator/wiki)
+- [Documentation(in French)](https://bricklou.github.io/launcher-tutorials)
+- [Documentation(in English)](https://github.com/zuygui/flowupdater-json-creator/wiki)
 
 ## License
 

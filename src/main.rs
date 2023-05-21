@@ -85,18 +85,10 @@ fn add_mod() -> String {
     mod_name.unwrap().to_string()
 }
 
+#[derive(Clone)]
 struct Mod {
     pub name: String,
     pub id: isize,
-}
-
-impl Clone for Mod {
-    fn clone(&self) -> Self {
-        Mod {
-            name: self.name.clone(),
-            id: self.id.clone(),
-        }
-    }
 }
 
 async fn select_founded_mod(
@@ -115,7 +107,7 @@ async fn select_founded_mod(
         .collect::<Vec<Mod>>();
 
     if mods.is_empty() {
-        Err("No mod found, please relauch the app and provide valide mods name")?;
+        return 
     }
 
     let mut choices = requestty::Question::select("mod")
