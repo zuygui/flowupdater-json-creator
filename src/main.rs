@@ -43,17 +43,25 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
         .build()?;
 
     let mut mod_list: Vec<CurseMod> = Vec::new();
+    let mut mod_added = false; // Nouvelle variable pour vérifier si au moins un mod a été ajouté
 
     loop {
-        let mut user_wanna_add_mod = check_if_user_wanna_add_mod();
+        let user_wanna_add_mod = check_if_user_wanna_add_mod();
 
         if user_wanna_add_mod {
-            let mut mods = add_mod();
-            let mut founded_mod = select_founded_mod(curse_client.clone(), mods);
-            mod_list.push(founded_mod.await?)
+            let mods = add_mod();
+            if let Some(founded_mod) = select_founded_mod(curse_client.clone(), mods).await {
+                mod_list.push(founded_mod);
+                mod_added = true; // Un mod a été ajouté
+            }
         } else {
             break;
         }
+    }
+
+    if !mod_added {
+        println!("No mods were added.");
+        return Ok(());
     }
 
     let json = json_creator::compile_mods_to_json(mod_list);
@@ -90,14 +98,11 @@ struct Mod {
     pub name: String,
     pub id: isize,
 }
-
-async fn select_founded_mod(
-    curse_client: CurseApiClient,
-    query: String,
-) -> Result<CurseMod, Box<dyn std::error::Error>> {
+async fn select_founded_mod(curse_client: CurseApiClient, query: String) -> Option<CurseMod> {
     let mods = curse_client
         .search_mod(query)
-        .await?
+        .await
+        .ok()?
         .data
         .iter()
         .map(|mod_| Mod {
@@ -107,11 +112,12 @@ async fn select_founded_mod(
         .collect::<Vec<Mod>>();
 
     if mods.is_empty() {
-        return 
+        println!("No mods found.");
+        return None;
     }
 
     let mut choices = requestty::Question::select("mod")
-        .message("Which are requested mod ?")
+        .message("Which mod do you want to add?")
         .choices(
             mods.iter()
                 .map(|mod_| mod_.name.clone())
@@ -124,9 +130,10 @@ async fn select_founded_mod(
 
     let file_id = curse_client
         .get_mod_file_id(mod_data.id, mod_data.name.clone())
-        .await?;
+        .await
+        .ok()?;
 
-    Ok(CurseMod {
+    Some(CurseMod {
         name: mod_data.name.clone(),
         mod_id: mod_data.id.clone(),
         file_id: file_id.file_id,
