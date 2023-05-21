@@ -55,7 +55,7 @@ jobs:
 
       - name: Build release
         run: |
-          cargo build --release --locked --target ${{ matrix.name }}
+          cargo build --release  --target ${{ matrix.name }}
           mv ./target/${{ matrix.name }}/release/flowupdater-json-creator.exe ./flowupdater-json-creator-${{ steps.flowupdater-json-creator_version.outputs.APP_VERSION }}-${{ matrix.name }}.exe
 
       - name: Upload executable to release
@@ -134,7 +134,7 @@ jobs:
 
       - name: Build release
         run: |
-          cargo build --release --locked --target ${{ matrix.target }}
+          cargo build --release  --target ${{ matrix.target }}
           mv ./target/${{ matrix.target }}/release/flowupdater-json-creator ./flowupdater-json-creator-${{ steps.flowupdater-json-creator_version.outputs.APP_VERSION }}-${{ matrix.target }}
 
       - name: Upload executable to release
@@ -180,7 +180,7 @@ jobs:
 
       - name: Build release
         run: |
-          cargo build --release --locked --target ${{ matrix.name }}
+          cargo build --release --target ${{ matrix.name }}
           mv ./target/${{ matrix.name }}/release/flowupdater-json-creator ./flowupdater-json-creator-${{ steps.flowupdater-json-creator_version.outputs.APP_VERSION }}-${{ matrix.name }}
       - name: Upload executable to release
         uses: softprops/action-gh-release@v1
