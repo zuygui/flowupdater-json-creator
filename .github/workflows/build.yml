@@ -125,4 +125,3 @@ jobs:
           name: "${{ github.ref_name }}"
           draft: true
           prerelease: false
-d
