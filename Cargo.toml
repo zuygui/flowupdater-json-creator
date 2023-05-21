@@ -1,8 +1,16 @@
 [package]
-name = "flowupdater-json-creator"
-version = "0.1.0"
-edition = "2021"
+name        = "flowupdater-json-creator"
+description = "Create JSON for flow-updater in a TUI"
+authors     = ["Zuygui", "Bricklou"]
+license     = "MIT"
+version     = "0.1.0"
+edition     = "2021"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
+tokio       = { version = "1",      features = ["full"]     }
+reqwest     = { version = "0.11",   features = ["json"]     }
+serde       = { version = "1",      features = ["derive"]   }
+serde_json  = { version = "1.0.96"                          }
+requestty   = { version = "0.5.0"   }
