@@ -3,7 +3,7 @@ name        = "flowupdater-json-creator"
 description = "Create JSON for flow-updater in a TUI"
 authors     = ["Zuygui", "Bricklou"]
 license     = "MIT"
-version     = "0.1.1"
+version     = "1.1.1"
 edition     = "2021"
 readme      = "README.md"
 homepage    = "https://github.com/zuygui/flowupdater-json-creator"
@@ -15,7 +15,7 @@ categories  = ["command-line-utilities", "development-tools"]
 
 [dependencies]
 tokio       = { version = "1",      default-features = false, features = ["rt-multi-thread", "macros"] }
-reqwest     = { version = "0.11",   features = ["json"]     }
+reqwest     = { version = "0.11",   features = ["json", "rust-tls"]     }
 serde       = { version = "1",      features = ["derive"]   }
 serde_json  = { version = "1.0.96"                          }
 requestty   = { version = "0.5.0"   }
