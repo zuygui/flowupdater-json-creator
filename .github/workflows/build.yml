@@ -33,8 +33,8 @@ jobs:
           toolchain: stable
           targets: ${{ matrix.name }}
 
-      - name: Get afetch version
-        id: afetch_version
+      - name: Get flowupdater-json-creator version
+        id: flowupdater_json_creator_version
         shell: pwsh
         run: |
           $version = (Get-Content .\Cargo.toml | Select-String -Pattern '^\s*version\s*=\s*"(\d+\.\d+\.\d+)"' | ForEach-Object { $_.Matches.Groups[1].Value })
@@ -56,13 +56,13 @@ jobs:
       - name: Build release
         run: |
           cargo build --release --locked --target ${{ matrix.name }}
-          mv ./target/${{ matrix.name }}/release/afetch.exe ./afetch-${{ steps.afetch_version.outputs.APP_VERSION }}-${{ matrix.name }}.exe
+          mv ./target/${{ matrix.name }}/release/flowupdater-json-creator.exe ./flowupdater-json-creator-${{ steps.flowupdater_json_creator_version.outputs.APP_VERSION }}-${{ matrix.name }}.exe
 
       - name: Upload executable to release
         uses: softprops/action-gh-release@v1
         with:
-          files: afetch-${{ steps.afetch_version.outputs.APP_VERSION }}-${{ matrix.name }}.exe
-          tag_name: ${{ steps.afetch_version.outputs.APP_VERSION }}
+          files: flowupdater-json-creator-${{ steps.flowupdater_json_creator_version.outputs.APP_VERSION }}-${{ matrix.name }}.exe
+          tag_name: ${{ steps.flowupdater_json_creator_version.outputs.APP_VERSION }}
 
   generate-linux-freebsd-executables:
     name: Build & publish for ${{ matrix.target }}
@@ -128,20 +128,20 @@ jobs:
           key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
           restore-keys: ${{ runner.os }}-cargo-
 
-      - name: Get afetch version
-        id: afetch_version
+      - name: Get flowupdater-json-creator version
+        id: flowupdater_json_creator_version
         run: echo "APP_VERSION=$(awk -F ' = ' '$1 ~ /version/ { gsub(/["]/, "", $2); printf("%s",$2) }' Cargo.toml)" >> $GITHUB_OUTPUT
 
       - name: Build release
         run: |
           cargo build --release --locked --target ${{ matrix.target }}
-          mv ./target/${{ matrix.target }}/release/afetch ./afetch-${{ steps.afetch_version.outputs.APP_VERSION }}-${{ matrix.target }}
+          mv ./target/${{ matrix.target }}/release/flowupdater-json-creator ./flowupdater-json-creator-${{ steps.flowupdater_json_creator_version.outputs.APP_VERSION }}-${{ matrix.target }}
 
       - name: Upload executable to release
         uses: softprops/action-gh-release@v1
         with:
-          files: afetch-${{ steps.afetch_version.outputs.APP_VERSION }}-${{ matrix.target }}
-          tag_name: ${{ steps.afetch_version.outputs.APP_VERSION }}
+          files: flowupdater-json-creator-${{ steps.flowupdater_json_creator_version.outputs.APP_VERSION }}-${{ matrix.target }}
+          tag_name: ${{ steps.flowupdater_json_creator_version.outputs.APP_VERSION }}
 
   generate-macos-executables:
     name: Build & publish for ${{ matrix.name }}
@@ -161,8 +161,8 @@ jobs:
           toolchain: stable
           targets: ${{ matrix.name }}
 
-      - name: Get AFetch version
-        id: afetch_version
+      - name: Get flowupdater-json-creator version
+        id: flowupdater_json_creator_version
         run: echo "APP_VERSION=$(awk -F ' = ' '$1 ~ /version/ { gsub(/["]/, "", $2); printf("%s",$2) }' Cargo.toml)" >> $GITHUB_OUTPUT
 
       - name: Set up cargo cache
@@ -181,9 +181,9 @@ jobs:
       - name: Build release
         run: |
           cargo build --release --locked --target ${{ matrix.name }}
-          mv ./target/${{ matrix.name }}/release/afetch ./afetch-${{ steps.afetch_version.outputs.APP_VERSION }}-${{ matrix.name }}
+          mv ./target/${{ matrix.name }}/release/flowupdater-json-creator ./flowupdater-json-creator-${{ steps.flowupdater_json_creator_version.outputs.APP_VERSION }}-${{ matrix.name }}
       - name: Upload executable to release
         uses: softprops/action-gh-release@v1
         with:
-          files: afetch-${{ steps.afetch_version.outputs.APP_VERSION }}-${{ matrix.name }}
-          tag_name: ${{ steps.afetch_version.outputs.APP_VERSION }}
+          files: flowupdater-json-creator-${{ steps.flowupdater_json_creator_version.outputs.APP_VERSION }}-${{ matrix.name }}
+          tag_name: ${{ steps.flowupdater_json_creator_version.outputs.APP_VERSION }}
