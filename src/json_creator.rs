@@ -17,7 +17,7 @@ use crate::curse_api::CurseMod;
  */
 
 pub fn compile_mods_to_json(mod_list: Vec<CurseMod>) {
-    let mut json = serde_json::json!({
+    let json = serde_json::json!({
         "curseFiles": mod_list.iter().map(|mod_| {
                         serde_json::json!({
                             "projectId": mod_.mod_id,

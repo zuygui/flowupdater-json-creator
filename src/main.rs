@@ -1,4 +1,4 @@
-use curse_api::{CurseApiClient, CurseApiClientBuilder, CurseMod, DataMods, SearchModResponse};
+use curse_api::{CurseApiClient, CurseApiClientBuilder, CurseMod};
 
 mod curse_api;
 mod json_creator;
@@ -64,7 +64,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
         return Ok(());
     }
 
-    let json = json_creator::compile_mods_to_json(mod_list);
+    json_creator::compile_mods_to_json(mod_list);
 
     println!("The JSON file is successfully created at : ./mods_list.json");
 
@@ -116,7 +116,7 @@ async fn select_founded_mod(curse_client: CurseApiClient, query: String) -> Opti
         return None;
     }
 
-    let mut choices = requestty::Question::select("mod")
+    let choices = requestty::Question::select("mod")
         .message("Which mod do you want to add?")
         .choices(
             mods.iter()
