@@ -2,6 +2,11 @@
 
 Create JSON file compatibles with Flow Updater from command line.
 
+## TODO for 2.0.0
+
+- [ ] support local mods
+- [ ] generate .zip or other archive at build if local mods added
+
 ## Installation
 
 Download from [releases](https://github.com/zuygui/flowupdater-json-creator/releases).
