@@ -17,12 +17,11 @@ cargo build --release
 ## Usage
 
 ```bash
-# Windows
-./flowupdater-json-creator_windows-amd64.exe
-# Linux
-./flowupdater-json-creator_linux-amd64
-# Macos
-./flowupdater-json-creator_darwin-amd64
+# in Linux; you need to set executable perm to file
+chmod +x ./flowupdater-json-creator-{your version end}
+
+# Run the executable
+./flowupdater-json-creator-{your version end}
 ```
 
 ## Features
