@@ -6,6 +6,7 @@ Create JSON file compatibles with Flow Updater from command line.
 
 - [ ] support local mods
 - [ ] generate .zip or other archive at build if local mods added
+- [ ] add Modrinth (mod provider like Curseforge) support
 
 ## Installation
 
