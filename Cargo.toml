@@ -15,9 +15,8 @@ categories  = ["command-line-utilities", "development-tools"]
 
 [dependencies]
 tokio       = { version = "1",       default-features = false, features = ["rt-multi-thread", "macros"] }
-openssl     = { version = "0.10.52", features = ["vendored"]                                            }
 serde       = { version = "1",       features = ["derive"]                                              }
-reqwest     = { version = "0.11",    features = ["json"]                                                }
+reqwest     = { version = "0.11",    features = ["json", "rustls-tls"]                                                }
 serde_json  = { version = "1.0.96"                                                                      }
 requestty   = { version = "0.5.0"                                                                       }
 
