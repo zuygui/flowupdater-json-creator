@@ -1,0 +1,1 @@
+pub const TOKEN: &str = env!("CURSE_API_TOKEN");
