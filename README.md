@@ -4,9 +4,9 @@ Create JSON file compatibles with Flow Updater from command line.
 
 ## TODO for 2.0.0
 
-- [ ] support local mods
-- [ ] generate .zip or other archive at build if local mods added
+- [x] support local mods and generate .zip or other archive at build if local mods added (Can't be add to the project because we can profile a URL for access to files)
 - [ ] add Modrinth (mod provider like Curseforge) support
+- [ ] add a GUI and a option for use the cli `--nogui`
 
 ## Installation
 
