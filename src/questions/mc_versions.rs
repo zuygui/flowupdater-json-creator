@@ -1,4 +1,4 @@
-use crate::{errors::CreatorError, minecraft::minecraft::McVersion};
+use crate::errors::CreatorError;
 
 use super::Questions;
 
@@ -23,14 +23,14 @@ impl Questions {
         if version_type.text.is_empty() {
             return Err(CreatorError::InvalidMinecraftVersion);
         }
-        
-        if version_type.text == "Latest" {
-            self.mc_versions = McVersion::Latest;
-            return Ok(());
-        }
 
         let versions = self.curse_api.get_minecraft_versions().await?;
         let versions = versions.data.iter().map(|v| v.version_string.to_string()).collect::<Vec<String>>();
+        
+        if version_type.text == "Latest" {
+            self.mc_versions = Some(versions[0].clone());
+            return Ok(());
+        }
 
         let v = requestty::Question::select("minecraft")
             .message("What Minecraft version would you like to use ?")
@@ -45,7 +45,7 @@ impl Questions {
         match result {
             Some(item) => {
                 let version = item.text.to_string();
-                self.mc_versions = McVersion::Version(version);
+                self.mc_versions = Some(version);
             },
             None => {
                 return Err(CreatorError::InvalidMinecraftVersion);
