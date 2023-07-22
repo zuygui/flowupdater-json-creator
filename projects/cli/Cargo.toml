@@ -1,0 +1,41 @@
+[package]
+name = "flowupdater-json-creator"
+description = "Create JSON for flow-updater in a TUI"
+authors = ["Zuygui", "Bricklou"]
+license = "MIT"
+version = "1.1.1"
+edition = "2021"
+readme = "README.md"
+homepage = "https://github.com/zuygui/flowupdater-json-creator"
+repository = "https://github.com/zuygui/flowupdater-json-creator"
+keywords = [
+    "cli",
+    "tui",
+    "json",
+    "flow-updater",
+    "flowupdater",
+    "curseforge",
+    "eternalapi",
+]
+categories = ["command-line-utilities", "development-tools"]
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+tokio = { version = "1", default-features = false, features = [
+    "rt-multi-thread",
+    "macros",
+] }
+serde = { version = "1", features = ["derive"] }
+reqwest = { version = "0.11", features = ["json", "rustls-tls"] }
+serde_json = { version = "1.0.96" }
+requestty = { version = "0.5.0" }
+thiserror = { version = "1" }
+time = { version = "0.3", features = ["serde", "serde-well-known"] }
+
+[profile.release]
+codegen-units = 1
+strip = true
+lto = true
+opt-level = "z"
+panic = "abort"
