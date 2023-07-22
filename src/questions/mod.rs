@@ -1,11 +1,13 @@
-use crate::{minecraft::modloader::ModLoaderType, curse_api::CurseApi, constants, errors::CreatorError};
+use crate::{
+    constants, curse_api::CurseApi, errors::CreatorError, minecraft::modloader::ModLoaderType,
+};
 
-mod modloader;
 mod mc_versions;
+mod modloader;
 
 pub struct Questions {
     mod_loader: Option<ModLoaderType>,
-    mc_versions: Option<String>,
+    mc_version: Option<String>,
 
     curse_api: CurseApi,
 }
@@ -14,7 +16,7 @@ impl Questions {
     pub fn new() -> Result<Self, CreatorError> {
         Ok(Self {
             mod_loader: None,
-            mc_versions: None,
+            mc_version: None,
             curse_api: CurseApi::new(constants::TOKEN)?,
         })
     }

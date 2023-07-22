@@ -1,17 +1,17 @@
 use errors::CreatorError;
 use questions::Questions;
 
-mod errors;
-mod questions;
-mod minecraft;
-mod curse_api;
 mod constants;
+mod curse_api;
+mod errors;
+mod minecraft;
+mod questions;
 
 #[tokio::main]
 async fn main() -> Result<(), CreatorError> {
     let mut questions = Questions::new()?;
 
     questions.ask_minecraft().await?;
-    questions.ask_modloader()?;
+    questions.ask_modloader().await?;
     Ok(())
 }

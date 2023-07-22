@@ -6,6 +6,9 @@ pub enum CreatorError {
     #[error("Invalid Minecraft Version")]
     InvalidMinecraftVersion,
 
+    #[error("No Mod Loader Available")]
+    NoModLoaderAvailable,
+
     #[error("Prompt Error: {0}")]
     PromptError(requestty::ErrorKind),
 
@@ -13,7 +16,7 @@ pub enum CreatorError {
     IoError(std::io::Error),
 
     #[error("{0}")]
-    HttpError(reqwest::Error)
+    HttpError(reqwest::Error),
 }
 
 impl From<requestty::ErrorKind> for CreatorError {
