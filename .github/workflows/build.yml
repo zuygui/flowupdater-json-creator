@@ -16,7 +16,6 @@ jobs:
       matrix:
         name:
           - x86_64-pc-windows-msvc
-          - i686-pc-windows-msvc
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
@@ -96,7 +95,7 @@ jobs:
         with:
           toolchain: stable
           targets: ${{ matrix.target }}
-        if: matrix.target == 'i686-unknown-linux-musl' || matrix.target == 'x86_64-unknown-linux-musl'
+        if: matrix.target == 'x86_64-unknown-linux-musl'
 
       - name: Set up cargo cache
         uses: actions/cache@v3
