@@ -6,6 +6,26 @@ use super::{CurseApi, CURSE_API_URL};
 
 
 #[derive(Debug, Deserialize, Serialize)]
+pub struct FilesModResponse {
+    #[serde(rename = "data")]
+    pub data: DataFiles,
+}
+
+#[derive(Debug, Deserialize, Serialize)]
+pub struct DataFiles {
+    #[serde(rename = "latestFilesIndexes")]
+    pub latest_files_indexes: Vec<ModFiles>,
+}
+
+#[derive(Debug, Deserialize, Serialize)]
+pub struct ModFiles {
+    #[serde(rename = "fileId")]
+    pub file_id: isize,
+    #[serde(rename = "gameVersion")]
+    pub game_version: String,
+}
+
+#[derive(Debug, Deserialize, Serialize)]
 pub struct SearchModResponse {
     #[serde(rename = "data")]
     pub data: Vec<DataMods>,
@@ -52,6 +72,13 @@ pub struct SearchMod {
     pub sort_field: Option<SearchSortField>,
 }
 
+#[derive(Clone)]
+pub struct CurseMod {
+    pub name: String,
+    pub mod_id: isize,
+    pub file_id: isize,
+}
+
 impl CurseApi {
     pub async fn search_mod<T: ToString>(&self, search_query: T, questions: Questions)
         -> Result<SearchModResponse, CreatorError>
@@ -72,4 +99,32 @@ impl CurseApi {
 
         Ok(response.json::<SearchModResponse>().await?)
     }
+
+     pub async fn get_mod_file_id(
+        &self,
+        mod_id: isize,
+        mod_name: String,
+        questions: Questions
+    ) -> Result<CurseMod, Box<dyn std::error::Error>> {
+        let id = mod_id.clone();
+        let url = format!("{}{}", CURSE_API_URL, format!("mods/{}", mod_id));
+
+        let response = self.http_client.get(&url).send().await?;
+
+        let file_id: Result<FilesModResponse, reqwest::Error> =
+            response.json::<FilesModResponse>().await;
+        // return Ok(file_id.unwrap().data.latest_files_indexes.iter().find(|&x| x.game_version == self.game_version).unwrap().file_id);
+        Ok(CurseMod {
+            name: mod_name,
+            mod_id: id,
+            file_id: file_id
+                .unwrap()
+                .data
+                .latest_files_indexes
+                .iter()
+                .find(|&x| x.game_version == questions.mc_version.as_ref().unwrap().to_string()).unwrap()
+                .file_id,
+        })
+    }
+
 }
