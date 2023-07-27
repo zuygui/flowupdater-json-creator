@@ -1,6 +1,6 @@
 use serde::{Serialize, Deserialize};
 
-use crate::{questions::Questions, minecraft::modloader::ModLoaderType, errors::CreatorError};
+use crate::{minecraft::modloader::ModLoaderType, errors::CreatorError};
 
 use super::{CurseApi, CURSE_API_URL};
 
@@ -72,7 +72,7 @@ pub struct SearchMod {
     pub sort_field: Option<SearchSortField>,
 }
 
-#[derive(Clone)]
+#[derive(Clone, Debug, Deserialize, Serialize)]
 pub struct CurseMod {
     pub name: String,
     pub mod_id: isize,
@@ -80,7 +80,7 @@ pub struct CurseMod {
 }
 
 impl CurseApi {
-    pub async fn search_mod<T: ToString>(&self, search_query: T, questions: Questions)
+    pub async fn search_mod<T: ToString>(&self, search_query: T, mc_version: String, mod_loader: ModLoaderType)
         -> Result<SearchModResponse, CreatorError>
         where
             T: Into<String>,
@@ -89,9 +89,9 @@ impl CurseApi {
 
         let query = SearchMod {
             game_id: 432,
-            game_version: questions.mc_version,
+            game_version: Some(mc_version),
             search_filter: Some(search_query.into()),
-            mod_loader_type: questions.mod_loader,
+            mod_loader_type: Some(mod_loader),
             sort_field: Some(SearchSortField::Name),
         };
 
@@ -104,7 +104,7 @@ impl CurseApi {
         &self,
         mod_id: isize,
         mod_name: String,
-        questions: Questions
+        mc_version: String
     ) -> Result<CurseMod, Box<dyn std::error::Error>> {
         let id = mod_id.clone();
         let url = format!("{}{}", CURSE_API_URL, format!("mods/{}", mod_id));
@@ -122,7 +122,7 @@ impl CurseApi {
                 .data
                 .latest_files_indexes
                 .iter()
-                .find(|&x| x.game_version == questions.mc_version.as_ref().unwrap().to_string()).unwrap()
+                .find(|&x| x.game_version == mc_version).unwrap()
                 .file_id,
         })
     }

@@ -9,6 +9,9 @@ pub enum CreatorError {
     #[error("No Mod Loader Available")]
     NoModLoaderAvailable,
 
+    #[error("No Mod Added")]
+    NoModAdded,
+
     #[error("Prompt Error: {0}")]
     PromptError(requestty::ErrorKind),
 

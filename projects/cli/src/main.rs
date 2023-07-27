@@ -1,6 +1,7 @@
 use errors::CreatorError;
 use questions::Questions;
 
+
 mod constants;
 mod curse_api;
 mod errors;
@@ -13,5 +14,7 @@ async fn main() -> Result<(), CreatorError> {
 
     questions.ask_minecraft().await?;
     questions.ask_modloader().await?;
+    questions.ask_mods().await?;
+
     Ok(())
 }

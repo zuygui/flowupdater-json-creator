@@ -4,6 +4,7 @@ use crate::{
 
 mod mc_versions;
 mod modloader;
+pub mod mods;
 
 pub struct Questions {
     pub mod_loader: Option<ModLoaderType>,
