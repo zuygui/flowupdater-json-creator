@@ -49,7 +49,7 @@ jobs:
 
       - name: Build release
         run: |
-          cargo build --release --locked --target ${{ matrix.name }}
+          cargo build --release --locked --target ${{ matrix.name }} --bin flowupdater-json-creator
           mv ./target/${{ matrix.name }}/release/flowupdater-json-creator.exe ./flowupdater-json-creator-${{ steps.flowupdater_json_creator_version.outputs.APP_VERSION }}-${{ matrix.name }}.exe
 
       - name: Upload executable to release
