@@ -92,7 +92,6 @@ jobs:
           target: ${{ matrix.target }}
       - name: Installing OpenSSL
         run: sudo apt update && sudo apt install libssl-dev -y
-        if: matrix.target == 'x86_64-unknown-linux-gnu'
 
       - name: Installing dependencies for i686-unknown-linux-musl & x86_64-unknown-linux-musl
         run: sudo apt update && sudo apt install musl-dev musl-tools pkg-config libssl-dev -y
