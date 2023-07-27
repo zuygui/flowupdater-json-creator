@@ -27,7 +27,7 @@ tokio = { version = "1", default-features = false, features = [
     "macros",
 ] }
 serde = { version = "1", features = ["derive"] }
-reqwest = { version = "0.11", features = ["json", "rustls-tls", "tokio-rustls"] }
+reqwest = { version = "0.11", features = ["json", "native-tls"] }
 serde_json = { version = "1.0.96" }
 requestty = { version = "0.5.0" }
 thiserror = { version = "1" }
