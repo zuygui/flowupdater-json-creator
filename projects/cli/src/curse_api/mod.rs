@@ -4,6 +4,7 @@ use crate::errors::CreatorError;
 
 mod minecraft;
 mod modloader;
+mod mods;
 
 pub static CURSE_API_URL: &str = "https://api.curseforge.com/v1/";
 

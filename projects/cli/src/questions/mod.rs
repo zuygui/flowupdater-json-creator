@@ -6,8 +6,8 @@ mod mc_versions;
 mod modloader;
 
 pub struct Questions {
-    mod_loader: Option<ModLoaderType>,
-    mc_version: Option<String>,
+    pub mod_loader: Option<ModLoaderType>,
+    pub mc_version: Option<String>,
 
     curse_api: CurseApi,
 }
