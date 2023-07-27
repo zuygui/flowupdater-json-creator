@@ -91,9 +91,6 @@ impl Questions {
         if !mod_added {
             return Err(CreatorError::NoModAdded);
         }
-
-        println!("mods: {:?}", mods);
-
         Ok(mods)
     }
 

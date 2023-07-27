@@ -1,6 +1,6 @@
 use std::io::Write;
 
-use crate::curse_api::CurseMod;
+use crate::curse_api::mods::CurseMod;
 
 /**
  *
