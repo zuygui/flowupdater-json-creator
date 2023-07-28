@@ -146,7 +146,7 @@ dependencies = [
 
 [[package]]
 name = "flowupdater-json-creator"
-version = "1.1.1"
+version = "1.2.0"
 dependencies = [
  "requestty",
  "reqwest",
