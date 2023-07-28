@@ -183,7 +183,7 @@ checksum = "6999dc1837253364c2ebb0704ba97994bd874e8f195d665c50b7548f6ea92764"
 
 [[package]]
 name = "flowupdater-json-creator"
-version = "1.1.1"
+version = "1.2.0"
 dependencies = [
  "openssl",
  "requestty",
