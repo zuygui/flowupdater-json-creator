@@ -27,12 +27,6 @@ jobs:
         with:
           target: ${{ matrix.target }}
 
-      # - name: Install OpenSSL
-      #   run: |
-      #     echo "VCPKG_ROOT=$env:VCPKG_INSTALLATION_ROOT" | Out-File -FilePath $env:GITHUB_ENV -Append
-      #     vcpkg integrate install
-      #     vcpkg install openssl:x64-windows-static-md
-
       - name: Install toolchain
         uses: dtolnay/rust-toolchain@stable
         with:
@@ -200,3 +194,10 @@ jobs:
         with:
           files: flowupdater-json-creator-${{ steps.flowupdater_json_creator_version.outputs.APP_VERSION }}-${{ matrix.target }}
           tag_name: ${{ steps.flowupdater_json_creator_version.outputs.APP_VERSION }}
+
+  generate-changelog:
+    name: Generate changelog
+    runs-on: ubuntu-latest
+    steps:
+      - name: Github Release Changelog Generator
+        uses: jaywcjlove/changelog-generator@v1.9.3
