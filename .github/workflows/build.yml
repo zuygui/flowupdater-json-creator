@@ -10,33 +10,40 @@ permissions:
 
 jobs:
   generate-windows-executables:
-    name: Build & publish for ${{ matrix.name }}
+    name: Build & publish for ${{ matrix.target }}
     runs-on: windows-latest
     strategy:
+      fail-fast: false
       matrix:
-        name:
+        target:
           - x86_64-pc-windows-msvc
+          - aarch64-pc-windows-msvc
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Install OpenSSL
-        run: |
-          echo "VCPKG_ROOT=$env:VCPKG_INSTALLATION_ROOT" | Out-File -FilePath $env:GITHUB_ENV -Append
-          vcpkg integrate install
-          vcpkg install openssl:x64-windows-static-md
+      - name: Install cross-compilation tools
+        uses: taiki-e/setup-cross-toolchain-action@v1
+        with:
+          target: ${{ matrix.target }}
+
+      # - name: Install OpenSSL
+      #   run: |
+      #     echo "VCPKG_ROOT=$env:VCPKG_INSTALLATION_ROOT" | Out-File -FilePath $env:GITHUB_ENV -Append
+      #     vcpkg integrate install
+      #     vcpkg install openssl:x64-windows-static-md
 
       - name: Install toolchain
         uses: dtolnay/rust-toolchain@stable
         with:
           toolchain: stable
-          targets: ${{ matrix.name }}
+          targets: ${{ matrix.target }}
 
       - name: Get flowupdater-json-creator version
         id: flowupdater_json_creator_version
         shell: pwsh
         run: |
-          $version = (Get-Content .\Cargo.toml | Select-String -Pattern '^\s*version\s*=\s*"(\d+\.\d+\.\d+)"' | ForEach-Object { $_.Matches.Groups[1].Value })
+          $version = (Get-Content .\projects\cli\Cargo.toml | Select-String -Pattern '^\s*version\s*=\s*"(\d+\.\d+\.\d+)"' | ForEach-Object { $_.Matches.Groups[1].Value })
           echo "APP_VERSION=$version" >> $env:GITHUB_OUTPUT
 
       - name: Set up cargo cache
@@ -54,29 +61,52 @@ jobs:
 
       - name: Build release
         run: |
-          cargo build --release --locked --target ${{ matrix.name }} --bin flowupdater-json-creator
-          mv ./target/${{ matrix.name }}/release/flowupdater-json-creator.exe ./flowupdater-json-creator-${{ steps.flowupdater_json_creator_version.outputs.APP_VERSION }}-${{ matrix.name }}.exe
+          cargo build  --bin flowupdater-json-creator --release --locked --target ${{ matrix.target }}
+          mv ./target/${{ matrix.target }}/release/flowupdater-json-creator.exe ./flowupdater-json-creator-${{ steps.flowupdater_json_creator_version.outputs.APP_VERSION }}-${{ matrix.target }}.exe
 
       - name: Upload executable to release
         uses: softprops/action-gh-release@v1
         with:
-          files: flowupdater-json-creator-${{ steps.flowupdater_json_creator_version.outputs.APP_VERSION }}-${{ matrix.name }}.exe
+          files: flowupdater-json-creator-${{ steps.flowupdater_json_creator_version.outputs.APP_VERSION }}-${{ matrix.target }}.exe
           tag_name: ${{ steps.flowupdater_json_creator_version.outputs.APP_VERSION }}
 
   generate-linux-freebsd-executables:
     name: Build & publish for ${{ matrix.target }}
     runs-on: ubuntu-20.04
     strategy:
+      fail-fast: false
       matrix:
         rust:
           - stable
         target:
+          - x86_64-unknown-freebsd
+          - i686-unknown-freebsd
+          - aarch64-unknown-linux-gnu
+          - arm-unknown-linux-gnueabi
+          - armv7-unknown-linux-gnueabi
           - armv7-unknown-linux-gnueabihf
+          - i586-unknown-linux-gnu
+          - i686-unknown-linux-gnu
+          - mips-unknown-linux-gnu
           - mips64-unknown-linux-gnuabi64
           - mips64el-unknown-linux-gnuabi64
+          - mipsel-unknown-linux-gnu
+          - powerpc-unknown-linux-gnu
           - powerpc64-unknown-linux-gnu
           - powerpc64le-unknown-linux-gnu
           - x86_64-unknown-linux-gnu
+          - i686-unknown-linux-musl
+          - aarch64-unknown-linux-musl
+          - arm-unknown-linux-musleabi
+          - arm-unknown-linux-musleabihf
+          - armv5te-unknown-linux-musleabi
+          - armv7-unknown-linux-musleabi
+          - armv7-unknown-linux-musleabihf
+          - i586-unknown-linux-musl
+          - mips-unknown-linux-musl
+          - mips64-unknown-linux-muslabi64
+          - mips64el-unknown-linux-muslabi64
+          - mipsel-unknown-linux-musl
           - x86_64-unknown-linux-musl
 
     steps:
@@ -87,22 +117,9 @@ jobs:
         run: rustup update ${{ matrix.rust }} && rustup default ${{ matrix.rust }}
 
       - name: Install cross-compilation tools
-        uses: Asthowen/setup-cross-toolchain-action@main
+        uses: taiki-e/setup-cross-toolchain-action@v1
         with:
           target: ${{ matrix.target }}
-      - name: Installing OpenSSL
-        run: sudo apt update && sudo apt install libssl-dev -y
-
-      - name: Installing dependencies for i686-unknown-linux-musl & x86_64-unknown-linux-musl
-        run: sudo apt update && sudo apt install musl-dev musl-tools pkg-config libssl-dev -y
-        if: matrix.target == 'x86_64-unknown-linux-musl'
-
-      - name: Install toolchain for i686-unknown-linux-musl & x86_64-unknown-linux-musl
-        uses: dtolnay/rust-toolchain@stable
-        with:
-          toolchain: stable
-          targets: ${{ matrix.target }}
-        if: matrix.target == 'x86_64-unknown-linux-musl'
 
       - name: Set up cargo cache
         uses: actions/cache@v3
@@ -119,11 +136,11 @@ jobs:
 
       - name: Get flowupdater-json-creator version
         id: flowupdater_json_creator_version
-        run: echo "APP_VERSION=$(awk -F ' = ' '$1 ~ /version/ { gsub(/["]/, "", $2); printf("%s",$2) }' Cargo.toml)" >> $GITHUB_OUTPUT
+        run: echo "APP_VERSION=$(awk -F ' = ' '$1 ~ /version/ { gsub(/["]/, "", $2); printf("%s",$2) }' projects/cli/Cargo.toml)" >> $GITHUB_OUTPUT
 
       - name: Build release
         run: |
-          cargo build --release --locked --target ${{ matrix.target }}
+          cargo build --bin flowupdater-json-creator --release --locked --target ${{ matrix.target }}
           mv ./target/${{ matrix.target }}/release/flowupdater-json-creator ./flowupdater-json-creator-${{ steps.flowupdater_json_creator_version.outputs.APP_VERSION }}-${{ matrix.target }}
 
       - name: Upload executable to release
@@ -133,11 +150,12 @@ jobs:
           tag_name: ${{ steps.flowupdater_json_creator_version.outputs.APP_VERSION }}
 
   generate-macos-executables:
-    name: Build & publish for ${{ matrix.name }}
+    name: Build & publish for ${{ matrix.target }}
     runs-on: macos-latest
     strategy:
+      fail-fast: false
       matrix:
-        name:
+        target:
           - x86_64-apple-darwin
           - aarch64-apple-darwin
     steps:
@@ -148,11 +166,16 @@ jobs:
         uses: dtolnay/rust-toolchain@stable
         with:
           toolchain: stable
-          targets: ${{ matrix.name }}
+          targets: ${{ matrix.target }}
+
+      - name: Install cross-compilation tools
+        uses: taiki-e/setup-cross-toolchain-action@v1
+        with:
+          target: ${{ matrix.target }}
 
       - name: Get flowupdater-json-creator version
         id: flowupdater_json_creator_version
-        run: echo "APP_VERSION=$(awk -F ' = ' '$1 ~ /version/ { gsub(/["]/, "", $2); printf("%s",$2) }' Cargo.toml)" >> $GITHUB_OUTPUT
+        run: echo "APP_VERSION=$(awk -F ' = ' '$1 ~ /version/ { gsub(/["]/, "", $2); printf("%s",$2) }' projects/cli/Cargo.toml)" >> $GITHUB_OUTPUT
 
       - name: Set up cargo cache
         uses: actions/cache@v3
@@ -169,18 +192,11 @@ jobs:
 
       - name: Build release
         run: |
-          cargo build --release --locked --target ${{ matrix.name }}
-          mv ./target/${{ matrix.name }}/release/flowupdater-json-creator ./flowupdater-json-creator-${{ steps.flowupdater_json_creator_version.outputs.APP_VERSION }}-${{ matrix.name }}
+          cargo build --bin flowupdater-json-creator --release --locked --target ${{ matrix.target }}
+          mv ./target/${{ matrix.target }}/release/flowupdater-json-creator ./flowupdater-json-creator-${{ steps.flowupdater_json_creator_version.outputs.APP_VERSION }}-${{ matrix.target }}
 
       - name: Upload executable to release
         uses: softprops/action-gh-release@v1
         with:
-          files: flowupdater-json-creator-${{ steps.flowupdater_json_creator_version.outputs.APP_VERSION }}-${{ matrix.name }}
+          files: flowupdater-json-creator-${{ steps.flowupdater_json_creator_version.outputs.APP_VERSION }}-${{ matrix.target }}
           tag_name: ${{ steps.flowupdater_json_creator_version.outputs.APP_VERSION }}
-
-  generate-changelog:
-    name: Generate changelog
-    runs-on: ubuntu-latest
-    steps:
-      - name: Github Release Changelog Generator
-        uses: jaywcjlove/changelog-generator@v1.9.3
