@@ -24,3 +24,9 @@ impl From<std::io::Error> for CreatorError {
         CreatorError::IoError(err)
     }
 }
+
+impl From<reqwest::Error> for CreatorError {
+    fn from(err: reqwest::Error) -> Self {
+        CreatorError::HttpError(err)
+    }
+}
