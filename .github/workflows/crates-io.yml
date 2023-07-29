@@ -23,6 +23,6 @@ jobs:
           override: true
 
       - name: Publish
-        run: cd projects/api cargo publish --token ${CRATES_TOKEN}
+        run: cd projects/api && cargo publish --token ${CRATES_TOKEN}
         env:
           CRATES_TOKEN: ${{ secrets.CRATES_TOKEN }}
