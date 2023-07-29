@@ -2,9 +2,9 @@ use reqwest::header::HeaderMap;
 
 use crate::errors::CreatorError;
 
-mod minecraft;
-mod modloader;
-pub(crate) mod mods;
+pub mod minecraft;
+pub mod modloader;
+pub mod mods;
 
 /// The base URL for the CurseForge API.
 pub static CURSE_API_URL: &str = "https://api.curseforge.com/v1/";

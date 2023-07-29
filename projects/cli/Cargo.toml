@@ -33,6 +33,7 @@ requestty = { version = "0.5.0" }
 thiserror = { version = "1" }
 time = { version = "0.3", features = ["serde", "serde-well-known"] }
 openssl = { version = "0.10", features = ["vendored"] }
+fujc-api = "1.1.0"
 
 [profile.release]
 codegen-units = 1

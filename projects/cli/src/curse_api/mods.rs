@@ -4,19 +4,27 @@ use crate::{minecraft::modloader::ModLoaderType, errors::CreatorError};
 
 use super::{CurseApi, CURSE_API_URL};
 
-
+/// A Minecraft mod struct.
+/// 
+/// This struct is used to deserialize the response from the CurseForge API.
 #[derive(Debug, Deserialize, Serialize)]
 pub struct FilesModResponse {
     #[serde(rename = "data")]
     pub data: DataFiles,
 }
 
+/// A list of Minecraft mod files.
+/// 
+/// This struct is used to deserialize the response from the CurseForge API.
 #[derive(Debug, Deserialize, Serialize)]
 pub struct DataFiles {
     #[serde(rename = "latestFilesIndexes")]
     pub latest_files_indexes: Vec<ModFiles>,
 }
 
+/// A Minecraft mod file struct.
+/// 
+/// This struct is used to deserialize the response from the CurseForge API.
 #[derive(Debug, Deserialize, Serialize)]
 pub struct ModFiles {
     #[serde(rename = "fileId")]
@@ -25,19 +33,25 @@ pub struct ModFiles {
     pub game_version: String,
 }
 
+/// A list of Minecraft mods.
+/// 
+/// This struct is used to deserialize the response from the CurseForge API.
 #[derive(Debug, Deserialize, Serialize)]
 pub struct SearchModResponse {
     #[serde(rename = "data")]
     pub data: Vec<DataMods>,
 }
 
+/// A Minecraft mod struct.
+/// 
+/// This struct is used to deserialize the response from the CurseForge API.
 #[derive(Debug, Deserialize, Serialize)]
 pub struct DataMods {
     pub id: isize,
     pub name: String,
 }
 
-
+/// A list of search filters.
 #[derive(Debug, Deserialize, Serialize)]
 pub enum SearchSortField {
     #[serde(rename = "featured")]
@@ -58,6 +72,9 @@ pub enum SearchSortField {
     GameVersion,
 }
 
+/// A struct for searching for Minecraft mods.
+/// 
+/// This struct is used to deserialize the response from the CurseForge API.
 #[derive(Debug, Deserialize, Serialize)]
 pub struct SearchMod {
     #[serde(rename = "gameId")]
@@ -72,6 +89,10 @@ pub struct SearchMod {
     pub sort_field: Option<SearchSortField>,
 }
 
+
+/// A Minecraft mod struct.
+/// 
+/// This struct is used to deserialize the response from the CurseForge API.
 #[derive(Clone, Debug, Deserialize, Serialize)]
 pub struct CurseMod {
     pub name: String,
@@ -80,6 +101,17 @@ pub struct CurseMod {
 }
 
 impl CurseApi {
+    /// Gets a list of Minecraft mods.
+    /// 
+    /// # Arguments
+    /// 
+    /// * `search_query` - The search query to use.
+    /// * `game_version` - The game version to get mods for.
+    /// * `mod_loader` - The mod loader to get mods for.
+    /// 
+    /// # Returns
+    /// 
+    /// A list of Minecraft mods.
     pub async fn search_mod<T: ToString>(&self, search_query: T, mc_version: String, mod_loader: ModLoaderType)
         -> Result<SearchModResponse, CreatorError>
         where
@@ -100,6 +132,17 @@ impl CurseApi {
         Ok(response.json::<SearchModResponse>().await?)
     }
 
+    /// Get a file id of a mod.
+    /// 
+    /// # Arguments
+    /// 
+    /// * `mod_id` - The id of the mod.
+    /// * `mod_name` - The name of the mod.
+    /// * `mc_version` - The Minecraft version to get the mod for.
+    /// 
+    /// # Returns
+    /// 
+    /// The file id of the mod.
      pub async fn get_mod_file_id(
         &self,
         mod_id: isize,
