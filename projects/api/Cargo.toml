@@ -1,8 +1,30 @@
 [package]
-name = "api"
+name = "fujc-api"
+description = "A Wrapper of the Curseforge api for FlowUpdater JSON Creator"
+homepage = "https://github.com/zuygui/flowupdater-json-creator"
+repository = "https://github.com/zuygui/flowupdater-json-creator"
+authors = ["Zuygui", "Bricklou"]
+keywords = ["curseforge", "api", "flowupdater", "json", "fujc"]
+categories = ["api-wrapper", "curseforge", "flowupdater", "json"]
+license = "MIT"
 version = "0.1.0"
 edition = "2021"
+
+[lib]
+name = "fujc"
+path = "src/lib.rs"
+crate-type = ["cdylib", "rlib"]
+
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
+# tokio = { version = "1", default-features = false, features = [
+#     "rt-multi-thread",
+#     "macros",
+# ] }
+serde = { version = "1", features = ["derive"] }
+reqwest = { version = "0.11", features = ["json", "native-tls"] }
+serde_json = { version = "1.0.96" }
+time = { version = "0.3", features = ["serde", "serde-well-known"] }
+openssl = { version = "0.10", features = ["vendored"] }
