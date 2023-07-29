@@ -14,3 +14,8 @@ target/
 
 /target
 .idea/
+
+# Added by me
+
+# A test output file
+mods_list.json 
