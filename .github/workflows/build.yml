@@ -1,8 +1,9 @@
 name: Generate executables and post them to release
 
 on:
-  release:
-    types: [published]
+  push:
+    tags:
+      - '*'
   workflow_dispatch:
 
 permissions:
@@ -11,6 +12,7 @@ permissions:
 jobs:
   generate-windows-executables:
     name: Build & publish for ${{ matrix.target }}
+    needs: create_release
     runs-on: windows-latest
     strategy:
       fail-fast: false
@@ -66,6 +68,7 @@ jobs:
 
   generate-linux-freebsd-executables:
     name: Build & publish for ${{ matrix.target }}
+    needs: create_release
     runs-on: ubuntu-20.04
     strategy:
       fail-fast: false
@@ -145,6 +148,7 @@ jobs:
 
   generate-macos-executables:
     name: Build & publish for ${{ matrix.target }}
+    needs: create_release
     runs-on: macos-latest
     strategy:
       fail-fast: false
@@ -195,9 +199,37 @@ jobs:
           files: flowupdater-json-creator-${{ steps.flowupdater_json_creator_version.outputs.APP_VERSION }}-${{ matrix.target }}
           tag_name: ${{ steps.flowupdater_json_creator_version.outputs.APP_VERSION }}
 
-  generate-changelog:
+  create_release:
     name: Generate changelog
     runs-on: ubuntu-latest
     steps:
       - name: Github Release Changelog Generator
         uses: jaywcjlove/changelog-generator@v1.9.3
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          filter-author: (jaywcjlove|小弟调调™|dependabot|renovate\\[bot\\]|dependabot\\[bot\\]|Renovate Bot)
+          filter: '[R|r]elease[d]\s+[v|V]\d(\.\d+){0,2}'
+          template: |
+            ## Bugs
+            {{fix}}
+            ## Feature
+            {{feat}}
+            ## Improve
+            {{refactor,perf,clean}}
+            ## Misc 
+            {{chore,style,ci||🔶 Nothing change}}
+            ## Unknown
+            {{__unknown__}}
+      - name: Get the changelog
+        run: echo "${{ steps.changelog.outputs.changelog }}"
+        
+      - name: Create Release
+        uses: ncipollo/release-action@v1
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          name: ${{ steps.flowupdater_json_creator_version.outputs.APP_VERSION }}
+          tag: ${{ steps.flowupdater_json_creator_version.outputs.APP_VERSION }}
+          body: |
+            ${{ steps.changelog.outputs.compareurl }}
+
+            ${{ steps.changelog.outputs.changelog }}
