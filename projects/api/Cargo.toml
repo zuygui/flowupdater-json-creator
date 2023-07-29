@@ -7,7 +7,7 @@ authors = ["Zuygui", "Bricklou"]
 keywords = ["curseforge", "api", "flowupdater", "json", "fujc"]
 categories = ["api-wrapper", "curseforge", "flowupdater", "json"]
 license = "MIT"
-version = "0.1.0"
+version = "1.0.0"
 edition = "2021"
 
 [lib]
