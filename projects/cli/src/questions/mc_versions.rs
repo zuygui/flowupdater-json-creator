@@ -1,9 +1,9 @@
-use crate::errors::CreatorError;
+use crate::errors::Error;
 
 use super::Questions;
 
 impl Questions {
-    pub async fn ask_minecraft(&mut self) -> Result<(), CreatorError> {
+    pub async fn ask_minecraft(&mut self) -> Result<(), Error> {
         // Ask the user if they want to use the latest version or a specific one
         let version_type = requestty::Question::select("version_type")
             .message("What Minecraft version type would you like to use ?")
@@ -15,16 +15,16 @@ impl Questions {
         let version_type = version_type.as_list_item();
 
         if version_type.is_none() {
-            return Err(CreatorError::InvalidMinecraftVersion);
+            return Err(Error::InvalidMinecraftVersion);
         }
 
         let version_type = version_type.unwrap();
 
         if version_type.text.is_empty() {
-            return Err(CreatorError::InvalidMinecraftVersion);
+            return Err(Error::InvalidMinecraftVersion);
         }
 
-        let versions = self.curse_api.get_minecraft_versions().await?;
+        let versions = self.curse_api.get_minecraft_versions().await.unwrap();
         let versions = versions
             .data
             .iter()
@@ -53,7 +53,7 @@ impl Questions {
                 self.mc_version = Some(version);
             }
             None => {
-                return Err(CreatorError::InvalidMinecraftVersion);
+                return Err(Error::InvalidMinecraftVersion);
             }
         }
 

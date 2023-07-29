@@ -1,6 +1,8 @@
-use crate::{errors::CreatorError, curse_api::mods::CurseMod, minecraft::Mod};
-
+use crate::errors::Error;
 use super::Questions;
+
+use fujc::curse_api::mods::CurseMod;
+use fujc::minecraft::Mod;
 
 impl Questions {
 
@@ -69,7 +71,7 @@ impl Questions {
     }
 
 
-    pub async fn ask_mods(&self) -> Result<Vec<CurseMod>, CreatorError> {
+    pub async fn ask_mods(&self) -> Result<Vec<CurseMod>, Error> {
         let mut mods : Vec<CurseMod> = Vec::new();
         let mut mod_added:  bool = false;
         loop {
@@ -89,7 +91,7 @@ impl Questions {
         }
 
         if !mod_added {
-            return Err(CreatorError::NoModAdded);
+            return Err(Error::NoModAdded);
         }
         Ok(mods)
     }

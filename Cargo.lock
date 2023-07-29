@@ -181,7 +181,7 @@ checksum = "6999dc1837253364c2ebb0704ba97994bd874e8f195d665c50b7548f6ea92764"
 name = "flowupdater-json-creator"
 version = "1.2.0"
 dependencies = [
- "fujc-api 1.1.0",
+ "fujc-api 1.1.1 (registry+https://github.com/rust-lang/crates.io-index)",
  "openssl",
  "requestty",
  "reqwest",
@@ -224,9 +224,7 @@ dependencies = [
 
 [[package]]
 name = "fujc-api"
-version = "1.1.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "82ee75e10a72486108a61099421ec1d6f03e610ba3cd4ee2a5ffa33f1942666d"
+version = "1.1.1"
 dependencies = [
  "openssl",
  "reqwest",
@@ -239,6 +237,8 @@ dependencies = [
 [[package]]
 name = "fujc-api"
 version = "1.1.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "9c8c48080f3d40c34271889f9d5987aff399ddfcac61e9d5121ab3a0b893b081"
 dependencies = [
  "openssl",
  "reqwest",

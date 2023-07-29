@@ -1,16 +1,14 @@
-use errors::CreatorError;
+use errors::Error;
 use questions::Questions;
 
 
 mod constants;
-mod curse_api;
 mod errors;
-mod minecraft;
 mod questions;
 mod json_creator;
 
 #[tokio::main]
-async fn main() -> Result<(), CreatorError> {
+async fn main() -> Result<(), Error> {
     let mut questions = Questions::new()?;
 
     questions.ask_minecraft().await?;

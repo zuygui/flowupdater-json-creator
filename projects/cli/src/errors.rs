@@ -1,5 +1,5 @@
 #[derive(thiserror::Error, Debug)]
-pub enum CreatorError {
+pub enum Error {
     #[error("Invalid Mod Loader")]
     InvalidModLoader,
 
@@ -22,20 +22,20 @@ pub enum CreatorError {
     HttpError(reqwest::Error),
 }
 
-impl From<requestty::ErrorKind> for CreatorError {
+impl From<requestty::ErrorKind> for Error {
     fn from(err: requestty::ErrorKind) -> Self {
-        CreatorError::PromptError(err)
+        Error::PromptError(err)
     }
 }
 
-impl From<std::io::Error> for CreatorError {
+impl From<std::io::Error> for Error {
     fn from(err: std::io::Error) -> Self {
-        CreatorError::IoError(err)
+        Error::IoError(err)
     }
 }
 
-impl From<reqwest::Error> for CreatorError {
+impl From<reqwest::Error> for Error {
     fn from(err: reqwest::Error) -> Self {
-        CreatorError::HttpError(err)
+        Error::HttpError(err)
     }
 }

@@ -1,6 +1,8 @@
 use crate::{
-    constants, curse_api::CurseApi, errors::CreatorError, minecraft::modloader::ModLoaderType,
+    constants, errors::Error
 };
+
+use fujc::{curse_api::CurseApi, minecraft::modloader::ModLoaderType};
 
 mod mc_versions;
 mod modloader;
@@ -14,11 +16,11 @@ pub struct Questions {
 }
 
 impl Questions {
-    pub fn new() -> Result<Self, CreatorError> {
+    pub fn new() -> Result<Self, Error> {
         Ok(Self {
             mod_loader: None,
             mc_version: None,
-            curse_api: CurseApi::new(constants::TOKEN)?,
+            curse_api: CurseApi::new(constants::TOKEN).unwrap(),
         })
     }
 }

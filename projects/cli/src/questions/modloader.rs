@@ -1,9 +1,11 @@
-use crate::{errors::CreatorError, questions::ModLoaderType};
+use crate::errors::Error;
+
+use fujc::minecraft::modloader::ModLoaderType  ;
 
 use super::Questions;
 
 impl Questions {
-    pub async fn ask_modloader(&mut self) -> Result<(), CreatorError> {
+    pub async fn ask_modloader(&mut self) -> Result<(), Error> {
         let ml = requestty::Question::select("modloader")
             .message("What Mod Loader would you like to use ?")
             .choices(vec!["Fabric", "Forge", "None"])
@@ -25,11 +27,11 @@ impl Questions {
                     self.mod_loader = None;
                 }
                 _ => {
-                    return Err(CreatorError::InvalidModLoader);
+                    return Err(Error::InvalidModLoader);
                 }
             },
             None => {
-                return Err(CreatorError::InvalidModLoader);
+                return Err(Error::InvalidModLoader);
             }
         }
 
@@ -37,10 +39,10 @@ impl Questions {
         if let Some(ml) = &self.mod_loader {
             let mc_version = self.mc_version.clone().unwrap();
 
-            let versions = self.curse_api.get_modloaders(mc_version, ml).await?;
+            let versions = self.curse_api.get_modloaders(mc_version, ml).await.unwrap();
 
             if versions.len() == 0 {
-                return Err(CreatorError::NoModLoaderAvailable);
+                return Err(Error::NoModLoaderAvailable);
             }
         }
 
