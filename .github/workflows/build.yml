@@ -12,7 +12,6 @@ permissions:
 jobs:
   generate-windows-executables:
     name: Build & publish for ${{ matrix.target }}
-    needs: create_release
     runs-on: windows-latest
     strategy:
       fail-fast: false
@@ -68,7 +67,6 @@ jobs:
 
   generate-linux-freebsd-executables:
     name: Build & publish for ${{ matrix.target }}
-    needs: create_release
     runs-on: ubuntu-20.04
     strategy:
       fail-fast: false
@@ -148,7 +146,6 @@ jobs:
 
   generate-macos-executables:
     name: Build & publish for ${{ matrix.target }}
-    needs: create_release
     runs-on: macos-latest
     strategy:
       fail-fast: false
@@ -199,7 +196,7 @@ jobs:
           files: flowupdater-json-creator-${{ steps.flowupdater_json_creator_version.outputs.APP_VERSION }}-${{ matrix.target }}
           tag_name: ${{ steps.flowupdater_json_creator_version.outputs.APP_VERSION }}
 
-  create_release:
+  create_changelog:
     name: Generate changelog
     runs-on: ubuntu-latest
     steps:
@@ -230,6 +227,12 @@ jobs:
 
       - name: Update release
         id: update_release
+        needs:
+          [
+            generate-windows-executables,
+            generate-linux-freebsd-executables,
+            generate-macos-executables,
+          ]
         uses: tubone24/update_release@v1.0
         env:
           GITHUB_TOKEN: ${{ github.token }}
