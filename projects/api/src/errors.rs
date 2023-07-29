@@ -12,9 +12,6 @@ pub enum CreatorError {
     #[error("No Mod Added")]
     NoModAdded,
 
-    #[error("Prompt Error: {0}")]
-    PromptError(requestty::ErrorKind),
-
     #[error("IO Error: {0}")]
     IoError(std::io::Error),
 
@@ -22,20 +19,8 @@ pub enum CreatorError {
     HttpError(reqwest::Error),
 }
 
-impl From<requestty::ErrorKind> for CreatorError {
-    fn from(err: requestty::ErrorKind) -> Self {
-        CreatorError::PromptError(err)
-    }
-}
-
 impl From<std::io::Error> for CreatorError {
     fn from(err: std::io::Error) -> Self {
         CreatorError::IoError(err)
-    }
-}
-
-impl From<reqwest::Error> for CreatorError {
-    fn from(err: reqwest::Error) -> Self {
-        CreatorError::HttpError(err)
     }
 }
