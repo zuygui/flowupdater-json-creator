@@ -3,7 +3,7 @@ name: Generate executables and post them to release
 on:
   push:
     tags:
-      - '*'
+      - "*"
   workflow_dispatch:
 
 permissions:
@@ -207,7 +207,6 @@ jobs:
         uses: jaywcjlove/changelog-generator@v1.9.3
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          filter-author: (jaywcjlove|小弟调调™|dependabot|renovate\\[bot\\]|dependabot\\[bot\\]|Renovate Bot)
           filter: '[R|r]elease[d]\s+[v|V]\d(\.\d+){0,2}'
           template: |
             ## Bugs
@@ -220,16 +219,14 @@ jobs:
             {{chore,style,ci||🔶 Nothing change}}
             ## Unknown
             {{__unknown__}}
+
       - name: Get the changelog
         run: echo "${{ steps.changelog.outputs.changelog }}"
-        
-      - name: Create Release
-        uses: ncipollo/release-action@v1
+
+      - name: Edit release body (changelog)
+        uses: irongut/EditRelease@v1.2.0
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          name: ${{ steps.flowupdater_json_creator_version.outputs.APP_VERSION }}
-          tag: ${{ steps.flowupdater_json_creator_version.outputs.APP_VERSION }}
+          id: ${{ github.event.release.id }}
           body: |
-            ${{ steps.changelog.outputs.compareurl }}
-
             ${{ steps.changelog.outputs.changelog }}
