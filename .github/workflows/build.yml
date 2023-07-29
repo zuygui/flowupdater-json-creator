@@ -203,11 +203,17 @@ jobs:
     name: Generate changelog
     runs-on: ubuntu-latest
     steps:
+      - name: Get previous tag
+        id: previous_tag
+        run: echo "previous_tag=$(git describe --tags --abbrev=0 2>/dev/null || echo '')" >> $GITHUB_ENV
+
       - name: Github Release Changelog Generator
         uses: jaywcjlove/changelog-generator@v1.9.3
+        if: env.previous_tag
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           filter: '[R|r]elease[d]\s+[v|V]\d(\.\d+){0,2}'
+          custom-emoji: "feat⭐,fix🐞,docs📖,chore💄,style🎨,type🆎,test⛑️,refactor🐝,website🌍,revert🔙,clean💊,perf📈,ci💢,build⛽"
           template: |
             ## Bugs
             {{fix}}
@@ -230,4 +236,6 @@ jobs:
           GITHUB_TOKEN: ${{ github.token }}
         with:
           body: |
+            ${{ steps.changelog.outputs.compareurl }}
+
             ${{ steps.changelog.outputs.changelog }}
