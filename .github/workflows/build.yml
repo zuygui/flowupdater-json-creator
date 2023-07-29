@@ -227,12 +227,6 @@ jobs:
 
       - name: Update release
         id: update_release
-        needs:
-          [
-            generate-windows-executables,
-            generate-linux-freebsd-executables,
-            generate-macos-executables,
-          ]
         uses: tubone24/update_release@v1.0
         env:
           GITHUB_TOKEN: ${{ github.token }}
