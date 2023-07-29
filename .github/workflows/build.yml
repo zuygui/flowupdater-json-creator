@@ -223,10 +223,11 @@ jobs:
       - name: Get the changelog
         run: echo "${{ steps.changelog.outputs.changelog }}"
 
-      - name: Edit release body (changelog)
-        uses: irongut/EditRelease@v1.2.0
+      - name: Update release
+        id: update_release
+        uses: tubone24/update_release@v1.0
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          id: ${{ github.event.release.id }}
           body: |
             ${{ steps.changelog.outputs.changelog }}
