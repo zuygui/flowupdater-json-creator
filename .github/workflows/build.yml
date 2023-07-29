@@ -3,7 +3,7 @@ name: Generate executables and post them to release
 on:
   push:
     tags:
-      - "*"
+      - "cli-*"
   workflow_dispatch:
 
 permissions:
