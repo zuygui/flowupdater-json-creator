@@ -9,6 +9,7 @@ categories = ["api-wrapper", "curseforge", "flowupdater", "json"]
 license = "MIT"
 version = "1.1.1"
 edition = "2021"
+documentation = "https://docs.rs/crate/fujc-api/latest"
 
 [lib]
 name = "fujc"
