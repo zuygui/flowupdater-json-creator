@@ -1,47 +1,92 @@
-# Flow Updater JSON Creator
+# Flow Updater JSON Creator : Generate JSONs compatible with Flow Updater.
 
-Create JSON file compatibles with Flow Updater from command line.
+<p align="center">
+  <a href="#key-features">Key Features</a> •
+  <a href="#installation">Installation</a> •
+  <a href="#usage">Usage</a> •
+  <a href="#contributing">Contributing</a> •
+  <a href="#license">License</a>
+</p>
 
-## TODO for 2.0.0
+## Key Features
 
-- [x] support local mods and generate .zip or other archive at build if local mods added (Can't be add to the project because we can profile a URL for access to files)
-- [ ] add Modrinth (mod provider like Curseforge) support
-- [ ] add a GUI and a option for use the cli `--nogui`
+- 📁 Generate JSON files compatible with [Flow Updater].
+- 🚀 Easy-to-use interface for creating configuration files.
+- 🔧 Customize JSON settings to match your requirements.
+- 📝 Documented code for easy integration into other projects.
 
 ## Installation
 
-Download from [releases](https://github.com/zuygui/flowupdater-json-creator/releases).
+### Download from Releases
 
-Or from source (require [cargo and rust](https://rust-lang.com)):
+1. Download the latest release from the [Releases](https://github.com/zuygui/flowupdater-json-creator/releases) page.
+
+### Build from source
+
+Requirements:
+
+- [Rust](https://www.rust-lang.org/tools/install)
+
+1. Clone the repository:
 
 ```bash
-git clone https://github.com/zuygui/flowupdater-json-creator.git
-cd flowupdater-json-creator
-cargo build --release
+git clone https://github.com/zuygui/flow-updater-json-creator.git
+```
+
+2. Navigate to the project directory:
+
+```bash
+cd flow-updater-json-creator
+```
+
+3. Build the application:
+
+```bash
+cargo build --bin flowupdater-json-creator --release
 ```
 
 ## Usage
 
-```bash
-# in Linux; you need to set executable perm to file
-chmod +x ./flowupdater-json-creator-{your version end}
+1. Run the application:
 
-# Run the executable
-./flowupdater-json-creator-{your version end}
+```bash
+/path/to/flow-updater-json-creator/flowupdater-json-creator
 ```
 
-## Features
+2. Follow the on-screen instructions to generate your JSON files.
 
-- [Eternal API (Curseforge api)](https://docs.curseforge.com/#getting-started) wrapper
-- JSON Transpiler from mods list
-- TUI with [requestty](https://github.com/Lutetium-Vanadium/requestty)
-- Cross platform
+3. Once generated, you can use the produced JSON files with the Flow Updater Java library.
 
-## Documentation
+## Contributing
 
-- [Documentation(in French)](https://bricklou.github.io/launcher-tutorials)
-- [Documentation(in English)](https://github.com/zuygui/flowupdater-json-creator/wiki)
+Contributions are welcome! Please follow these steps:
+
+1. Fork this repository.
+
+2. Create a new branch:
+
+```bash
+git checkout -b feature/your-feature-name
+```
+
+3. Make your changes and commit them:
+
+```bash
+git commit -am 'feat: :sparkles: implement new feature'
+```
+
+4. Push to your forked repository:
+
+```bash
+git push origin feature/your-feature-name
+```
+
+5. Create a pull request detailing your changes.
 
 ## License
 
-[MIT](https://github.com/zuygui/flowupdater-json-creator/blob/master/LICENSE)
+This project is licensed under the [MIT License](./LICENSE).
+
+---
+
+🤓 Happy Hacking ! - Handcrafted with 💖 by [Zuygui](https://github.com/zuygui).
