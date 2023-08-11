@@ -1,12 +1,21 @@
 # Flow Updater JSON Creator : Generate JSONs compatible with Flow Updater.
 
 <p align="center">
+  <a href="#todo">TODO</a> •
   <a href="#key-features">Key Features</a> •
   <a href="#installation">Installation</a> •
   <a href="#usage">Usage</a> •
   <a href="#contributing">Contributing</a> •
   <a href="#license">License</a>
 </p>
+
+## TODO
+
+- Support other mods providers (Modrinth, etc.)
+- Add custom json targets (MCP, External Files, etc.)
+- Add compatibles version getter from ModLoader's API
+
+If you have any suggestions, feel free to open an issue or a pull request.
 
 ## Key Features
 
