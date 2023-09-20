@@ -19,10 +19,10 @@ async fn main() -> Result<(), Error> {
     // compile mods to json
     json_creator::compile_mods_to_json(mods);
 
-    println!("----------------------------------");
-    println!("Your mods list has been generated !");
-    println!("> Output file: mods_list.json");
-    println!("----------------------------------");
+    println!("――――――――――――――――――――――――――――――――――");
+    println!("Your mods list has been generated!");
+    println!("> Output file: ./mods_list.json");
+    println!("――――――――――――――――――――――――――――――――――");
 
     Ok(())
 }
