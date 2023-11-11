@@ -3,7 +3,7 @@ name = "flowupdater-json-creator"
 description = "Create JSON for flow-updater in a TUI"
 authors = ["Zuygui", "Bricklou"]
 license = "MIT"
-version = "1.4.0"
+version = "1.5.0"
 edition = "2021"
 readme = "README.md"
 homepage = "https://github.com/zuygui/flowupdater-json-creator"
@@ -34,7 +34,9 @@ thiserror = { version = "1" }
 time = { version = "0.3", features = ["serde", "serde-well-known"] }
 openssl = { version = "0.10", features = ["vendored"] }
 fujc-api = "1.1.1"
-
+sha1 = "0.10.6"
+walkdir = "2"
+sha1_smol = "1.0"
 [profile.release]
 codegen-units = 1
 strip = true

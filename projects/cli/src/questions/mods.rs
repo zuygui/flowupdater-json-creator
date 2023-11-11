@@ -25,7 +25,7 @@ impl Questions {
         }
 
         let choices = requestty::Question::select("mod")
-            .message("Which mod do you want to add?")
+            .message("Which curseforge mod do you want to add?")
             .choices(
                 mods.iter()
                     .map(|mod_| mod_.name.clone())
@@ -50,7 +50,7 @@ impl Questions {
 
     fn check_if_user_wanna_add_mod(&self) -> bool {
         let add_mod_question = requestty::Question::confirm("add_mod")
-            .message("Do you want to add a mod ?")
+            .message("Do you want to add a curseforge mod ?")
             .build();
 
         let binding = requestty::prompt_one(add_mod_question)
@@ -62,7 +62,7 @@ impl Questions {
 
     fn add_mod(&self) -> String {
         let what_mod = requestty::Question::input("what_mod")
-            .message("What mod do you want to add ?")
+            .message("What curseforge mod do you want to add ?")
             .build();
 
         let binding = requestty::prompt_one(what_mod).unwrap();
@@ -88,10 +88,6 @@ impl Questions {
             } else {
                 break;
             }
-        }
-
-        if !mod_added {
-            return Err(Error::NoModAdded);
         }
         Ok(mods)
     }

@@ -6,6 +6,7 @@ use fujc::{curse_api::CurseApi, minecraft::modloader::ModLoaderType};
 
 mod mc_versions;
 mod modloader;
+pub mod local_mods;
 pub mod mods;
 
 pub struct Questions {

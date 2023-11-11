@@ -6,6 +6,7 @@ mod constants;
 mod errors;
 mod questions;
 mod json_creator;
+mod local_files_checker;
 
 #[tokio::main]
 async fn main() -> Result<(), Error> {
@@ -15,9 +16,10 @@ async fn main() -> Result<(), Error> {
     questions.ask_modloader().await?;
     
     let mods = questions.ask_mods().await?;
+    let local_mods = questions.ask_local_mods()?;
 
     // compile mods to json
-    json_creator::compile_mods_to_json(mods);
+    json_creator::compile_mods_to_json(mods, local_mods);
 
     println!("――――――――――――――――――――――――――――――――――");
     println!("Your mods list has been generated!");
